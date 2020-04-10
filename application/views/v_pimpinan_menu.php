@@ -127,7 +127,7 @@ echo $tahun;
           </a>
         </li>
 		<li class="<?php echo $visualisasi;?>">
-          <a href="<?php echo base_url(); ?>pimpinan/visualisasi">
+          <a href="<?php echo base_url(); ?>visualisasi/index">
             <span>Visualisasi</span>
           </a>
         </li>

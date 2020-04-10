@@ -110,24 +110,157 @@ class Data extends CI_Controller {
 		echo $tbl_mahasiswa->nama_lengkap;
     }
 	
+	///////////////////////////////////
+	///////////////////////////////////
+	
 	public function grafik_tahun($tahun="")
     {
-		if($tahun=="" || $tahun=="Semua"){
-			$where = "";
-		}else{
-			$where = "WHERE LEFT(a.waktu_mendaftar,4)='$tahun'";
-		}
-		
-		$tbl_pendaftar = $this->db->query("select LEFT(a.waktu_mendaftar,4) as 'Tahun masuk', count(a.no_pendaftar) as 'Jumlah Data'
-from tbl_pendaftar a $where 
+		$tbl_pendaftar = $this->db->query("select LEFT(a.waktu_mendaftar,4) as 'Tahun', count(a.no_pendaftar) as 'Jumlah'
+from tbl_pendaftar a where a.waktu_mendaftar BETWEEN date(concat(Year(DATE_SUB(curdate(), INTERVAL 11 YEAR)), '-01-01')) AND date(concat(Year(CURDATE()), '-12-31'))
 group by LEFT(a.waktu_mendaftar,4)")->result_array();
 		echo json_encode($tbl_pendaftar, JSON_NUMERIC_CHECK);
+    }
+	
+	public function grafik_subjalur($tahun="")
+    {
+		$tbl_pendaftar = $this->db->query("select count(a.no_pendaftar) as 'Jumlah', b.keterangan as 'Jalur'
+from tbl_pendaftar a
+left join tbl_subjalur b on a.subjalur=b.id_subjalur
+where LEFT(a.waktu_mendaftar,4)='$tahun'
+group by a.subjalur
+")->result_array();
+		echo json_encode($tbl_pendaftar, JSON_NUMERIC_CHECK);
+    }
+	
+	public function grafik_prodi1($tahun="", $jalure="")
+    {
+		$jalur = str_replace("%20"," ",$jalure);
+		$tbl_pendaftar = $this->db->query("select count(a.no_pendaftar) as 'Jumlah', c.nama_prodi as 'Prodi'
+from tbl_pendaftar a
+left join tbl_subjalur b on a.subjalur=b.id_subjalur
+left join tbl_prodi c on a.prodi_pilihan1=c.id_prodi
+where LEFT(a.waktu_mendaftar,4)='$tahun' and b.keterangan='$jalur'
+group by c.nama_prodi
+")->result_array();
+		echo json_encode($tbl_pendaftar, JSON_NUMERIC_CHECK);
+    }
+	
+	public function grafik_sekolah1($tahun="", $jalure="", $prodie="")
+    {
+		$jalur = str_replace("%20"," ",$jalure);
+		$prodi = str_replace("%20"," ",$prodie);
+		
+		$tbl_pendaftar = $this->db->query("select count(a.no_pendaftar) as 'Jumlah', CONCAT(d.nama_sekolah,' ',d.kota_sekolah) as 'Sekolah'
+from tbl_pendaftar a
+left join tbl_subjalur b on a.subjalur=b.id_subjalur
+left join tbl_prodi c on a.prodi_pilihan1=c.id_prodi
+left join tbl_sekolah d on a.sekolah=d.id_sekolah
+where LEFT(a.waktu_mendaftar,4)='$tahun' and b.keterangan='$jalur' and c.nama_prodi='$prodi'
+group by d.id_sekolah
+")->result_array();
+		echo json_encode($tbl_pendaftar, JSON_NUMERIC_CHECK);
+    }
+	
+	public function grafik_prodi2($tahun="", $jalure="")
+    {
+		$jalur = str_replace("%20"," ",$jalure);
+		$tbl_pendaftar = $this->db->query("select count(a.no_pendaftar) as 'Jumlah', c.nama_prodi as 'Prodi'
+from tbl_pendaftar a
+left join tbl_subjalur b on a.subjalur=b.id_subjalur
+left join tbl_prodi c on a.prodi_pilihan2=c.id_prodi
+where LEFT(a.waktu_mendaftar,4)='$tahun' and b.keterangan='$jalur'
+group by c.nama_prodi
+")->result_array();
+		echo json_encode($tbl_pendaftar, JSON_NUMERIC_CHECK);
+    }
+	
+	public function grafik_sekolah2($tahun="", $jalure="", $prodie="")
+    {
+		$jalur = str_replace("%20"," ",$jalure);
+		$prodi = str_replace("%20"," ",$prodie);
+		
+		$tbl_pendaftar = $this->db->query("select count(a.no_pendaftar) as 'Jumlah', CONCAT(d.nama_sekolah,' ',d.kota_sekolah) as 'Sekolah'
+from tbl_pendaftar a
+left join tbl_subjalur b on a.subjalur=b.id_subjalur
+left join tbl_prodi c on a.prodi_pilihan2=c.id_prodi
+left join tbl_sekolah d on a.sekolah=d.id_sekolah
+where LEFT(a.waktu_mendaftar,4)='$tahun' and b.keterangan='$jalur' and c.nama_prodi='$prodi'
+group by d.id_sekolah
+")->result_array();
+		echo json_encode($tbl_pendaftar, JSON_NUMERIC_CHECK);
+    }
+	
+	public function grafik_maba()
+    {
+		$grafik_maba = $this->db->query("select LEFT(a.waktu_mendaftar,4) as 'Tahun', count(a.no_pendaftar) as 'Jumlah'
+from tbl_pendaftar a where a.status_kelulusan='1' 
+and a.waktu_mendaftar BETWEEN date(concat(Year(DATE_SUB(curdate(), INTERVAL 11 YEAR)), '-01-01')) AND date(concat(Year(CURDATE()), '-12-31'))
+group by LEFT(a.waktu_mendaftar,4)
+")->result_array();
+		
+		$results = ["maba" => $grafik_maba];
+		
+		echo json_encode($results);
     }
 	
 	public function grafik_tahun_masuk()
     {
 		$tbl_pendaftar = $this->db->query("select LEFT(a.waktu_mendaftar,4) as 'tahun' from tbl_pendaftar a
 group by LEFT(a.waktu_mendaftar,4)")->result_array();
+		echo json_encode($tbl_pendaftar, JSON_NUMERIC_CHECK);
+    }
+	///////////////////////////////////
+	///////////////////////////////////
+	public function grafik_tahun_mahasiswa($tahun="")
+    {
+		$tbl_pendaftar = $this->db->query("select LEFT(a.waktu_mendaftar,4) as 'Tahun', count(a.no_pendaftar) as 'Jumlah'
+from tbl_pendaftar a 
+join tbl_mahasiswa b on a.no_pendaftar=b.no_pendaftar
+where a.waktu_mendaftar BETWEEN date(concat(Year(DATE_SUB(curdate(), INTERVAL 11 YEAR)), '-01-01')) AND date(concat(Year(CURDATE()), '-12-31'))
+group by LEFT(a.waktu_mendaftar,4)")->result_array();
+		echo json_encode($tbl_pendaftar, JSON_NUMERIC_CHECK);
+    }
+	
+	public function grafik_subjalur_mahasiswa($tahun="")
+    {
+		$tbl_pendaftar = $this->db->query("select count(a.no_pendaftar) as 'Jumlah', b.keterangan as 'Jalur'
+from tbl_pendaftar a
+join tbl_mahasiswa c on a.no_pendaftar=c.no_pendaftar
+left join tbl_subjalur b on a.subjalur=b.id_subjalur
+where LEFT(a.waktu_mendaftar,4)='$tahun'
+group by a.subjalur
+")->result_array();
+		echo json_encode($tbl_pendaftar, JSON_NUMERIC_CHECK);
+    }
+	
+	public function grafik_prodi_mahasiswa($tahun="", $jalure="")
+    {
+		$jalur = str_replace("%20"," ",$jalure);
+		$tbl_pendaftar = $this->db->query("select count(a.no_pendaftar) as 'Jumlah', c.nama_prodi as 'Prodi'
+from tbl_pendaftar a
+join tbl_mahasiswa d on a.no_pendaftar=d.no_pendaftar
+left join tbl_subjalur b on a.subjalur=b.id_subjalur
+left join tbl_prodi c on a.prodi_lulus=c.id_prodi
+where LEFT(a.waktu_mendaftar,4)='$tahun' and b.keterangan='$jalur'
+group by c.nama_prodi
+")->result_array();
+		echo json_encode($tbl_pendaftar, JSON_NUMERIC_CHECK);
+    }
+	
+	public function grafik_sekolah_mahasiswa($tahun="", $jalure="", $prodie="")
+    {
+		$jalur = str_replace("%20"," ",$jalure);
+		$prodi = str_replace("%20"," ",$prodie);
+		
+		$tbl_pendaftar = $this->db->query("select count(a.no_pendaftar) as 'Jumlah', CONCAT(d.nama_sekolah,' ',d.kota_sekolah) as 'Sekolah'
+from tbl_pendaftar a
+join tbl_mahasiswa e on a.no_pendaftar=e.no_pendaftar
+left join tbl_subjalur b on a.subjalur=b.id_subjalur
+left join tbl_prodi c on a.prodi_lulus=c.id_prodi
+left join tbl_sekolah d on a.sekolah=d.id_sekolah
+where LEFT(a.waktu_mendaftar,4)='$tahun' and b.keterangan='$jalur' and c.nama_prodi='$prodi'
+group by d.id_sekolah
+")->result_array();
 		echo json_encode($tbl_pendaftar, JSON_NUMERIC_CHECK);
     }
 	

@@ -38,5 +38,9 @@
 	include("v_pimpinan_menu.php");
 }elseif($this->uri->segment(1)=="mahasiswa"){
 	include("v_mahasiswa_menu.php");
+}elseif($this->uri->segment(1)=="beranda" || $this->uri->segment(1)==""){
+	include("v_beranda_menu.php");
+}elseif($this->uri->segment(1)=="visualisasi"){
+	include("v_visualisasi_menu.php");
 }
 ?>

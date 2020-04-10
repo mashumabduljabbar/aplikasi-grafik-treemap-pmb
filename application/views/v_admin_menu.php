@@ -103,7 +103,7 @@ echo $tahun;
   $visualisasi = "";
   $laporan = "";
   $user = "";
-  
+ 
   if($geturl=="" or strpos($geturl, "index")!== FALSE){
 	  $beranda = "active";
   }
@@ -131,14 +131,13 @@ echo $tahun;
   if(strpos($geturl, "user")!== FALSE){
 	  $user = "active";
   }
-  
   ?>
   <aside class="main-sidebar">
     <section class="sidebar">
       <ul class="sidebar-menu">
         <li class="<?php echo $beranda;?>">
           <a href="<?php echo base_url(); ?>admin">
-            <span>Dashboard</span>
+           <i class="fa fa-home"></i>  <span>Home</span>
           </a>
         </li>
 		<li class="<?php echo $pendaftar;?>">
@@ -167,7 +166,7 @@ echo $tahun;
           </a>
         </li>
 		<li class="<?php echo $visualisasi;?>">
-          <a href="<?php echo base_url(); ?>admin/visualisasi">
+          <a href="<?php echo base_url(); ?>visualisasi/index">
             <span>Visualisasi</span>
           </a>
         </li>
@@ -183,7 +182,7 @@ echo $tahun;
         </li>
 		<li class="">
           <a href="<?php echo base_url(); ?>login/logout">
-            <span>Logout</span>
+            <i class="fa fa-key"></i> <span>Keluar</span>
           </a>
         </li>
       </ul>

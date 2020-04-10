@@ -2,32 +2,7 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<script type="text/javascript" src="<?php echo base_url(); ?>assets/js/treemaps/easeljs-0.8.1.min.js"></script>
-<script type="text/javascript" src="<?php echo base_url(); ?>assets/js/treemaps/tweenjs-0.6.1.min.js"></script>
-<script type="text/javascript" src="<?php echo base_url(); ?>assets/js/treemaps/chromath.min.js"></script>
-<script type="text/javascript" src="<?php echo base_url(); ?>assets/js/treemaps/DrasticTreemap.min.js"></script>
-<script src="<?php echo base_url(); ?>assets/plugins/jQuery/jquery-2.2.3.min.js"></script>
-<script type="text/javascript">
-	var tahun = "<?php echo $tahun;?>";
-	var url = "http://localhost/github/treemap/data/grafik_tahun/"+tahun;
-	
-	var config = {
-		"container": "container",
-		"sizeColumn": "Jumlah Data",
-		"labelColumn": "Tahun masuk",
-		"colorColumn": "Jumlah Data",
-		"labelFormat": [{"level": 0, "visType": "treemap", "font": "bold 16px Arial", "color": "#363636"}],
-		"speed": 1.0
-	};
-	
-	$.getJSON(url, 
-			function(data) {
-				console.log(data);
-				window.treemap = new DrasticTreemap(data, config);
-			}
-	);
-	
-</script>
+
 <style type="text/css">
     body {
         width: 100%;
@@ -107,7 +82,7 @@ th,td
 			</tr>
 		</table>
 		<br>
-		<label><h4 style="text-align:center;">Laporan Visualisasi Pendaftar</h4></label>
+		<label><h4 style="text-align:center;">Laporan Jumlah Pendaftar Setiap Tahun</h4></label>
 		<label><h5>Tanggal Cetak : <?php echo $tanggalcetak;?></h5><label/>
 		<br>
 			<table border="1" class="laporan">
@@ -127,7 +102,6 @@ th,td
 				</tbody>
 			</table>
 		<br>
-		<p id="container" style="position:relative;width:650px;height:400px;"></p>
 	</div>
 </body>
 <script src="<?php echo base_url(); ?>assets/plugins/jQuery/jquery-2.2.3.min.js"></script>

@@ -117,6 +117,9 @@ LEFT JOIN tbl_prodi h ON h.id_prodi=a.prodi_lulus
 	public function pendaftar_aksi_ubah()
     {
 		if(isset($_POST['id_pendaftar'])){
+			if($_POST['prodi_lulus']==''){
+				$_POST['prodi_lulus'] = null;
+			}
 			$where['id_pendaftar'] = $_POST['id_pendaftar'];
 			$this->m_general->edit("tbl_pendaftar", $where, $_POST);
 			redirect('admin/pendaftar');

@@ -50,7 +50,7 @@
 								</td>
 							</tr>
 							<tr>
-								<td> Laporan Visualisasi Pendaftaran </td>
+								<td> Laporan Jumlah Pendaftar Setiap Tahun </td>
 								<td> 
 								<form method="post" action="<?php echo base_url(); ?>laporan/visualisasi" id="visualisasi" target="_blank">
 									<div class="form-group col-md-4">
